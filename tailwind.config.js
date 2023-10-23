@@ -7,6 +7,7 @@ module.exports = {
         brand: '#19A69C',
         brand_lighter_1: '#00c7ae',
         brand_lighter_2: '#eafaf9',
+        light_gray: '#f2f2f2',
       },
     },
   },

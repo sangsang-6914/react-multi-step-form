@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <header className="flex justify-center items-center p-4 sticky top-0 border-b border-b-[#f2f2f2] bg-[#fff] h-[3.625rem] xl:h-[4.5rem]">
+    <header className="flex justify-center items-center p-4 sticky top-0 border-b border-b-light_gray bg-[#fff] h-[3.625rem] z-20">
       <Link to="/">
         <img
           data-v-54e47384=""
