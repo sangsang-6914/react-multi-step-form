@@ -4,6 +4,8 @@ import Button from '../ui/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { formatAnswer, saveAnswer } from '../../store/answer';
 import { nextPage, prevPage } from '../../store/page';
+import Checkbox from '../ui/Checkbox';
+import Radio from '../ui/Radio';
 
 type Props = {
   questionInfo: Question;
@@ -63,7 +65,6 @@ function QuestionForm({
   const handleNextBtnClick = (e: FormEvent) => {
     e.preventDefault();
 
-    // 유효성 검증
     if (!checkedList.length && selected === '') {
       window.alert('값을 입력해 주세요!');
       return;
@@ -76,7 +77,6 @@ function QuestionForm({
   const handleSubmitBtnClick = (e: FormEvent) => {
     e.preventDefault();
 
-    // 유효성 검증
     if (!checkedList.length && selected === '') {
       window.alert('값을 입력해 주세요!');
       return;
@@ -125,50 +125,46 @@ function QuestionForm({
 
   return (
     <form className="flex flex-col gap-5 h-full justify-around">
-      <h1 className="font-bold text-3xl w-full text-center">{title}</h1>
-      <ul className="p-4">
+      <h1 className="font-bold text-[1.6rem] w-full text-center">{title}</h1>
+      <ul className="p-4 flex flex-col gap-4">
         {formType === 'checkbox' ? (
           <>
             {options.map(({ text, id }) => (
-              <li key={id} className="flex gap-2">
-                <input
-                  type="checkbox"
-                  value={text}
-                  id={`checkbox_${id}`}
-                  onChange={(e) => handleChecked(e, text)}
+              <li key={id}>
+                <Checkbox
+                  text={text}
+                  id={id}
                   checked={checkedList.includes(text)}
+                  onChecked={handleChecked}
                 />
-                <label htmlFor={`checkbox_${id}`}>{text}</label>
               </li>
             ))}
           </>
         ) : (
           <>
             {options.map(({ text, id }) => (
-              <li key={id} className="flex gap-2">
-                <input
-                  type="radio"
-                  value={text}
-                  id={`checkbox_${id}`}
-                  name={itemId + ''}
-                  onChange={(e) => handleSelected(e, text)}
+              <li key={id}>
+                <Radio
+                  text={text}
+                  id={id}
+                  itemId={itemId}
                   checked={selected === text}
+                  onSelected={handleSelected}
                 />
-                <label htmlFor={`checkbox_${id}`}>{text}</label>
               </li>
             ))}
           </>
         )}
       </ul>
-      <div className="flex gap-4 self-end">
+      <div className="flex gap-4 self-end px-4">
         {currPage > 0 && (
-          <Button text="Prev" color="blue" onClick={handlePrevBtnClick} />
+          <Button text="이전" color="blue" onClick={handlePrevBtnClick} />
         )}
         {currPage < questionLength - 1 && (
-          <Button text="Next" color="brand" onClick={handleNextBtnClick} />
+          <Button text="다음" color="brand" onClick={handleNextBtnClick} />
         )}
         {currPage === questionLength - 1 && (
-          <Button text="Submit" color="red" onClick={handleSubmitBtnClick} />
+          <Button text="제출" color="red" onClick={handleSubmitBtnClick} />
         )}
       </div>
     </form>

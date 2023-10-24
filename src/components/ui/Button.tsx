@@ -9,7 +9,9 @@ type Props = {
 function Button({ text, color, onClick }: Props) {
   return (
     <button
-      className={`${setColor(color)} p-3 text-white font-bold`}
+      className={`${setColor(
+        color
+      )} py-2 px-6 text-white font-bold rounded-md hover:brightness-90`}
       onClick={onClick}
     >
       {text}
@@ -20,9 +22,9 @@ function Button({ text, color, onClick }: Props) {
 function setColor(color: string) {
   switch (color) {
     case 'red':
-      return 'bg-red-400';
+      return 'bg-red-500';
     case 'blue':
-      return 'bg-blue-400';
+      return 'bg-blue-500';
     case 'brand':
       return 'bg-brand';
     default:
