@@ -36,6 +36,14 @@ function CleanupPage() {
     };
   }, [cleanupRequestForm, dispatch]);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
+
   return (
     <div className="flex flex-col h-[94vh] max-h-screen">
       <div className="sticky top-[3.625rem] bg-[#fff]">

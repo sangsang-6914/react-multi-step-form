@@ -4,7 +4,6 @@ import Button from '../ui/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { formatAnswer, saveAnswer } from '../../store/answer';
 import { nextPage, prevPage } from '../../store/page';
-import ProgressBar from './ProgressBar';
 
 type Props = {
   questionInfo: Question;

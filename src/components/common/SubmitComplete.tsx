@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { resetAnswer } from '../../store/answer';
 import { resetPage } from '../../store/page';

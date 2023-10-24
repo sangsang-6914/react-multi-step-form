@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { isArray } from 'util';
 
 export type answerState = {
   id: number;
