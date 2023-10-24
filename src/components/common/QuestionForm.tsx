@@ -4,6 +4,7 @@ import Button from '../ui/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { formatAnswer, saveAnswer } from '../../store/answer';
 import { nextPage, prevPage } from '../../store/page';
+import ProgressBar from './ProgressBar';
 
 type Props = {
   questionInfo: Question;
@@ -124,7 +125,7 @@ function QuestionForm({
   }, [answerList, itemId, formType]);
 
   return (
-    <form className="flex flex-col h-full justify-between">
+    <form className="flex flex-col gap-5 h-full justify-around">
       <h1 className="font-bold text-3xl w-full text-center">{title}</h1>
       <ul className="p-4">
         {formType === 'checkbox' ? (

@@ -2,10 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export type pageState = {
   currPage: number;
+  completedPage: number;
 };
 
 const initialState: pageState = {
   currPage: 0,
+  completedPage: 0,
 };
 
 const pageSlice = createSlice({
@@ -13,6 +15,9 @@ const pageSlice = createSlice({
   initialState,
   reducers: {
     nextPage: (state) => {
+      if (state.currPage === state.completedPage) {
+        state.completedPage += 1;
+      }
       state.currPage += 1;
     },
     prevPage: (state) => {
@@ -20,6 +25,7 @@ const pageSlice = createSlice({
     },
     resetPage: (state) => {
       state.currPage = 0;
+      state.completedPage = 0;
     },
   },
 });

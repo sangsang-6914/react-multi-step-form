@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { resetAnswer, saveFormId } from '../store/answer';
 import SubmitComplete from '../components/common/SubmitComplete';
 import { resetPage } from '../store/page';
+import ProgressBar from '../components/common/ProgressBar';
 
 function CleanupPage() {
   const dispatch = useAppDispatch();
@@ -39,13 +40,13 @@ function CleanupPage() {
     <div className="flex flex-col h-[94vh] max-h-screen">
       <div className="sticky top-[3.625rem] bg-[#fff]">
         <section className="w-[32.5rem] mx-auto pt-6 pb-6 z-10">
-          <h2 className="font-bold text-2xl w-full text-center">대청소</h2>
-          <div>Progressbar</div>
+          <h2 className="font-bold text-2xl w-full text-center mb-4">대청소</h2>
+          <ProgressBar questionLength={questionLength} />
         </section>
       </div>
       <section className="bg-light_gray w-full h-full">
-        <div className="w-[32.5rem] mx-auto mt-32">
-          <div className="p-6 mt-10 rounded-lg w-full h-[500px] bg-[#fff]">
+        <div className="w-[32.5rem] mx-auto mt-10">
+          <div className="p-10 mt-10 rounded-lg w-full bg-[#fff]">
             {isSuccess ? (
               <SubmitComplete />
             ) : (
