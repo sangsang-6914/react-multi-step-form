@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import AnswerReducer from './answer';
+import PageReducer from './page';
 
 const store = configureStore({
   reducer: {
     answer: AnswerReducer,
+    page: PageReducer,
   },
 });
 

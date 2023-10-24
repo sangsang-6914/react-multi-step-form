@@ -2,54 +2,90 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Question } from '../../model/question';
 import Button from '../ui/Button';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { saveAnswer } from '../../store/answer';
+import { formatAnswer, saveAnswer } from '../../store/answer';
+import { nextPage, prevPage } from '../../store/page';
 
 type Props = {
   questionInfo: Question;
-  onNextBtnClick: (e: FormEvent) => void;
-  onPrevBtnClick: (e: FormEvent) => void;
+  questionLength: number;
 };
 
 function QuestionForm({
   questionInfo: { title, options, formType, itemId },
-  onNextBtnClick,
-  onPrevBtnClick,
+  questionLength,
 }: Props) {
   const answerList = useAppSelector((state) => state.answer.items);
-
-  const [checkedList, setCheckedList] = useState<string[]>([]);
-  const [selected, setSelected] = useState<string>('');
+  const currPage = useAppSelector((state) => state.page.currPage);
 
   const dispatch = useAppDispatch();
 
+  const [checkedList, setCheckedList] = useState<string[]>([]);
+
+  const [selected, setSelected] = useState<string>('');
+
   const handleChecked = (e: ChangeEvent<HTMLInputElement>, text: string) => {
     const isChecked = e.target.checked;
+    let updatedCheckedList;
     if (isChecked) {
-      setCheckedList((prev) => [...prev, text]);
+      updatedCheckedList = [...checkedList, text];
+      setCheckedList(updatedCheckedList);
     } else {
-      setCheckedList(checkedList.filter((item) => item !== text));
+      updatedCheckedList = checkedList.filter((item) => item !== text);
+      setCheckedList(updatedCheckedList);
     }
+
+    dispatch(
+      saveAnswer({
+        id: itemId,
+        answer: updatedCheckedList,
+      })
+    );
   };
 
   const handleSelected = (e: ChangeEvent<HTMLInputElement>, text: string) => {
     if (selected === text) return;
     setSelected(text);
-  };
 
-  const handlePrevBtnClick = (e: FormEvent) => {
-    resetData();
-    onPrevBtnClick(e);
-  };
-
-  const handleNextBtnClick = (e: FormEvent) => {
     dispatch(
       saveAnswer({
         id: itemId,
-        answer: formType === 'checkbox' ? checkedList : selected,
+        answer: text,
       })
     );
+  };
+
+  const handlePrevBtnClick = (e: FormEvent) => {
+    e.preventDefault();
+    dispatch(prevPage());
     resetData();
-    onNextBtnClick(e);
+  };
+
+  const handleNextBtnClick = (e: FormEvent) => {
+    e.preventDefault();
+
+    // 유효성 검증
+    if (!checkedList.length && selected === '') {
+      window.alert('값을 입력해 주세요!');
+      return;
+    }
+
+    dispatch(nextPage());
+    resetData();
+  };
+
+  const handleSubmitBtnClick = (e: FormEvent) => {
+    e.preventDefault();
+
+    // 유효성 검증
+    if (!checkedList.length && selected === '') {
+      window.alert('값을 입력해 주세요!');
+      return;
+    }
+
+    // 제출 완료 페이지의 answer 데이터의 문자열 표현을 위함
+    dispatch(formatAnswer());
+    dispatch(nextPage());
+    resetData();
   };
 
   const resetData = () => {
@@ -125,8 +161,15 @@ function QuestionForm({
         )}
       </ul>
       <div className="flex gap-4 self-end">
-        <Button text="Prev" color="blue" onClick={handlePrevBtnClick} />
-        <Button text="Next" color="brand" onClick={handleNextBtnClick} />
+        {currPage > 0 && (
+          <Button text="Prev" color="blue" onClick={handlePrevBtnClick} />
+        )}
+        {currPage < questionLength - 1 && (
+          <Button text="Next" color="brand" onClick={handleNextBtnClick} />
+        )}
+        {currPage === questionLength - 1 && (
+          <Button text="Submit" color="red" onClick={handleSubmitBtnClick} />
+        )}
       </div>
     </form>
   );

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { isArray } from 'util';
 
 export type answerState = {
   id: number;
@@ -41,8 +42,18 @@ const answerSlice = createSlice({
       state.id = 0;
       state.items = [];
     },
+    formatAnswer: (state) => {
+      const updatedAnswer = state.items.map((item) => {
+        if (Array.isArray(item.answer)) {
+          return { ...item, answer: item.answer.join(',') };
+        }
+        return item;
+      });
+      state.items = updatedAnswer;
+    },
   },
 });
 
-export const { saveFormId, saveAnswer, resetAnswer } = answerSlice.actions;
+export const { saveFormId, saveAnswer, resetAnswer, formatAnswer } =
+  answerSlice.actions;
 export default answerSlice.reducer;
