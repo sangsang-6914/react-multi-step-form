@@ -1,10 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCleanupQuestionList } from '../api/cleanup';
 import { RequestForm } from '../model/question';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import QuestionForm from '../components/common/QuestionForm';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { saveFormId } from '../store/answer';
 
 function CleanupPage() {
+  const dispatch = useAppDispatch();
   const [currPage, setCurrPage] = useState(0);
   const {
     isLoading,
@@ -31,6 +34,10 @@ function CleanupPage() {
     e.preventDefault();
     currPage < questionLength - 1 && setCurrPage((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    dispatch(saveFormId(cleanupRequestForm?.formId));
+  }, [cleanupRequestForm, dispatch]);
 
   return (
     <div className="flex flex-col h-[94vh] max-h-screen">

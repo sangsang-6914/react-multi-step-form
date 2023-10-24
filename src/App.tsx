@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const client = new QueryClient();
 
@@ -9,7 +11,9 @@ function App() {
     <>
       <QueryClientProvider client={client}>
         <Header />
-        <Outlet />
+        <Provider store={store}>
+          <Outlet />
+        </Provider>
       </QueryClientProvider>
     </>
   );
