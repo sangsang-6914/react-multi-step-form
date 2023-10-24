@@ -23,10 +23,26 @@ const answerSlice = createSlice({
       state.id = action.payload;
     },
     saveAnswer: (state, action) => {
-      state.items.push(action.payload);
+      const id = action.payload.id;
+      if (state.items.find((item) => item.id === id)) {
+        const updatedAnswer = state.items.map((item) => {
+          if (item.id === id) {
+            return action.payload;
+          } else {
+            return item;
+          }
+        });
+        state.items = updatedAnswer;
+      } else {
+        state.items.push(action.payload);
+      }
+    },
+    resetAnswer: (state) => {
+      state.id = 0;
+      state.items = [];
     },
   },
 });
 
-export const { saveFormId, saveAnswer } = answerSlice.actions;
+export const { saveFormId, saveAnswer, resetAnswer } = answerSlice.actions;
 export default answerSlice.reducer;

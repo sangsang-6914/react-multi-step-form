@@ -3,8 +3,8 @@ import { getCleanupQuestionList } from '../api/cleanup';
 import { RequestForm } from '../model/question';
 import { FormEvent, useEffect, useState } from 'react';
 import QuestionForm from '../components/common/QuestionForm';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { saveFormId } from '../store/answer';
+import { useAppDispatch } from '../hooks/useRedux';
+import { resetAnswer, saveFormId } from '../store/answer';
 
 function CleanupPage() {
   const dispatch = useAppDispatch();
@@ -37,6 +37,9 @@ function CleanupPage() {
 
   useEffect(() => {
     dispatch(saveFormId(cleanupRequestForm?.formId));
+    return () => {
+      dispatch(resetAnswer());
+    };
   }, [cleanupRequestForm, dispatch]);
 
   return (

@@ -1,6 +1,8 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Question } from '../../model/question';
 import Button from '../ui/Button';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { saveAnswer } from '../../store/answer';
 
 type Props = {
   questionInfo: Question;
@@ -13,9 +15,12 @@ function QuestionForm({
   onNextBtnClick,
   onPrevBtnClick,
 }: Props) {
-  // prev로 돌아왔을 때 redux 데이터 있으면 초기화
+  const answerList = useAppSelector((state) => state.answer.items);
+
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>('');
+
+  const dispatch = useAppDispatch();
 
   const handleChecked = (e: ChangeEvent<HTMLInputElement>, text: string) => {
     const isChecked = e.target.checked;
@@ -37,6 +42,12 @@ function QuestionForm({
   };
 
   const handleNextBtnClick = (e: FormEvent) => {
+    dispatch(
+      saveAnswer({
+        id: itemId,
+        answer: formType === 'checkbox' ? checkedList : selected,
+      })
+    );
     resetData();
     onNextBtnClick(e);
   };
@@ -45,6 +56,36 @@ function QuestionForm({
     setCheckedList([]);
     setSelected('');
   };
+
+  useEffect(() => {
+    const initCheckedList = () => {
+      if (answerList.length) {
+        if (answerList.find((answer) => answer.id === itemId)) {
+          const index = answerList.findIndex((answer) => answer.id === itemId);
+          const data = answerList[index].answer as string[];
+          return data;
+        } else {
+          return [];
+        }
+      }
+      return [];
+    };
+    const initSelected = () => {
+      if (answerList.length) {
+        if (answerList.find((answer) => answer.id === itemId)) {
+          const index = answerList.findIndex((answer) => answer.id === itemId);
+          const data = answerList[index].answer as string;
+          return data;
+        } else {
+          return '';
+        }
+      }
+      return '';
+    };
+    formType === 'checkbox'
+      ? setCheckedList(initCheckedList)
+      : setSelected(initSelected);
+  }, [answerList, itemId, formType]);
 
   return (
     <form className="flex flex-col h-full justify-between">
