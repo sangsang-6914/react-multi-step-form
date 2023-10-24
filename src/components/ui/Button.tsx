@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 
 type Props = {
   text: string;
   color: string;
-  onClick?: () => void;
+  onClick?: (e: FormEvent) => void;
 };
 
 function Button({ text, color, onClick }: Props) {

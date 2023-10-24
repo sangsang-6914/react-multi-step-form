@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCleanupQuestionList } from '../api/cleanup';
 import { RequestForm } from '../model/question';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import QuestionForm from '../components/common/QuestionForm';
 
 function CleanupPage() {
@@ -18,16 +18,18 @@ function CleanupPage() {
   });
 
   const question = cleanupRequestForm?.items[currPage];
-  const maxLength = cleanupRequestForm?.items.length ?? 0;
+  const questionLength = cleanupRequestForm?.items.length ?? 0;
 
-  console.log(cleanupRequestForm);
+  const isSuccess = currPage === questionLength;
 
-  const handlePrevClick = () => {
+  const handlePrevClick = (e: FormEvent) => {
+    e.preventDefault();
     currPage > 0 && setCurrPage((prev) => prev - 1);
   };
 
-  const handleNextClick = () => {
-    currPage < maxLength - 1 && setCurrPage((prev) => prev + 1);
+  const handleNextClick = (e: FormEvent) => {
+    e.preventDefault();
+    currPage < questionLength - 1 && setCurrPage((prev) => prev + 1);
   };
 
   return (
@@ -41,12 +43,16 @@ function CleanupPage() {
       <section className="bg-light_gray w-full h-full">
         <div className="w-[40.5rem] mx-auto">
           <div className="p-6 mt-10 rounded-lg w-full h-[500px] bg-[#fff]">
-            {question && (
-              <QuestionForm
-                questionInfo={question}
-                onNextBtnClick={handleNextClick}
-                onPrevBtnClick={handlePrevClick}
-              />
+            {isSuccess ? (
+              <div>success page</div>
+            ) : (
+              question && (
+                <QuestionForm
+                  questionInfo={question}
+                  onNextBtnClick={handleNextClick}
+                  onPrevBtnClick={handlePrevClick}
+                />
+              )
             )}
           </div>
         </div>
