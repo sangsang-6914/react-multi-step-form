@@ -54,7 +54,7 @@ function CleanupPage() {
       </div>
       <section className="bg-light_gray w-full h-full">
         <div className="w-[32.5rem] mx-auto mt-10">
-          <div className="p-10 mt-10 rounded-lg w-full bg-[#fff]">
+          <div className="p-10 mt-10 rounded-xl shadow-xl w-full bg-[#fff]">
             {isSuccess ? (
               <SubmitComplete />
             ) : (

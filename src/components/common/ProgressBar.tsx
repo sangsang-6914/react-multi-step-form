@@ -12,7 +12,7 @@ function ProgressBar({ questionLength }: Props) {
     <div className="w-full h-[5px] bg-gray-200">
       <div
         style={{ width: `${progressBarGage}%`, opacity: `${progressBarGage}%` }}
-        className={`h-[5px] bg-brand_lighter_1`}
+        className={`h-[5px] bg-brand_lighter_1 transition-all duration-[1200ms]`}
       ></div>
     </div>
   );
