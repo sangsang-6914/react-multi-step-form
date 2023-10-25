@@ -8,6 +8,7 @@ import { resetAnswer, saveFormId } from '../store/answer';
 import SubmitComplete from '../components/common/SubmitComplete';
 import { resetPage } from '../store/page';
 import ProgressBar from '../components/common/ProgressBar';
+import { AxiosError } from 'axios';
 
 function CleanupPage() {
   const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ function CleanupPage() {
     isLoading,
     error,
     data: cleanupRequestForm,
-  } = useQuery<RequestForm>({
+  } = useQuery<RequestForm, AxiosError>({
     queryKey: ['cleanupRequestForm'],
     queryFn: () => getCleanupQuestionList(),
     retry: 3,
@@ -37,11 +38,23 @@ function CleanupPage() {
   }, [cleanupRequestForm, dispatch]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="fixed top-0 w-full h-full flex flex-col gap-5 items-center justify-center">
+        <div className="animate-spin-infinite w-16 h-16 border border-[#c8c8c8] border-t-2 border-t-brand rounded-[50%] " />
+        <span className="font-semibold">데이터를 받아오는 중입니다...</span>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>{error.message}</div>;
+    return (
+      <div className="fixed top-0 w-full h-full flex flex-col gap-5 items-center justify-center">
+        <span className="text-2xl font-semibold">
+          데이터를 받아오는 도중 에러가 발생했습니다.
+        </span>
+        <span className="font-semibold">Server Error: {error.message}</span>
+      </div>
+    );
   }
 
   return (
