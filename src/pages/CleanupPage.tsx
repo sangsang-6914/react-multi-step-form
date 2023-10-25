@@ -2,13 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { getCleanupQuestionList } from '../api/cleanup';
 import { RequestForm } from '../model/question';
 import { useEffect } from 'react';
-import QuestionForm from '../components/common/QuestionForm';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { resetAnswer, saveFormId } from '../store/answer';
-import SubmitComplete from '../components/common/SubmitComplete';
 import { resetPage } from '../store/page';
-import ProgressBar from '../components/common/ProgressBar';
 import { AxiosError } from 'axios';
+import Spinner from '../components/common/Spinner';
+import Error from '../components/common/Error';
+import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
+import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
 
 function CleanupPage() {
   const dispatch = useAppDispatch();
@@ -37,49 +38,19 @@ function CleanupPage() {
     };
   }, [cleanupRequestForm, dispatch]);
 
-  if (isLoading) {
-    return (
-      <div className="fixed top-0 w-full h-full flex flex-col gap-5 items-center justify-center">
-        <div className="animate-spin-infinite w-16 h-16 border border-[#c8c8c8] border-t-2 border-t-brand rounded-[50%] " />
-        <span className="font-semibold">데이터를 받아오는 중입니다...</span>
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />;
 
-  if (error) {
-    return (
-      <div className="fixed top-0 w-full h-full flex flex-col gap-5 items-center justify-center">
-        <span className="text-2xl font-semibold">
-          데이터를 받아오는 도중 에러가 발생했습니다.
-        </span>
-        <span className="font-semibold">Server Error: {error.message}</span>
-      </div>
-    );
-  }
+  if (error) return <Error error={error} />;
 
   return (
     <div className="flex flex-col h-[94vh] max-h-screen">
-      <div className="sticky top-[3.625rem] bg-[#fff]">
-        <section className="w-[32.5rem] mx-auto pt-6 pb-6 z-10">
-          <h2 className="font-bold text-2xl w-full text-center mb-4">대청소</h2>
-          <ProgressBar questionLength={questionLength} />
-        </section>
-      </div>
+      <ProgressBarWrapper title="대청소" questionLength={questionLength} />
       <section className="bg-light_gray w-full h-full">
-        <div className="w-[32.5rem] mx-auto mt-10">
-          <div className="p-10 mt-10 rounded-xl shadow-xl w-full bg-[#fff]">
-            {isSuccess ? (
-              <SubmitComplete />
-            ) : (
-              question && (
-                <QuestionForm
-                  questionInfo={question}
-                  questionLength={questionLength}
-                />
-              )
-            )}
-          </div>
-        </div>
+        <QuestionFormWrapper
+          isSuccess={isSuccess}
+          question={question}
+          questionLength={questionLength}
+        />
       </section>
     </div>
   );
