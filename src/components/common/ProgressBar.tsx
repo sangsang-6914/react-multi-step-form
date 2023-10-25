@@ -9,10 +9,10 @@ function ProgressBar({ questionLength }: Props) {
   const progressBarGage = getProgressBarGage(questionLength, completedPage);
 
   return (
-    <div className="w-full h-[5px] bg-gray-200">
+    <div className="w-full h-2 bg-gray-200 rounded-xl">
       <div
         style={{ width: `${progressBarGage}%`, opacity: `${progressBarGage}%` }}
-        className={`h-[5px] bg-brand_lighter_1 transition-all duration-[1200ms]`}
+        className={`h-2 bg-brand_lighter_1 transition-all duration-[1200ms] rounded-xl`}
       ></div>
     </div>
   );

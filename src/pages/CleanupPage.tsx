@@ -1,42 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
-import { getCleanupQuestionList } from '../api/cleanup';
-import { RequestForm } from '../model/question';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { resetAnswer, saveFormId } from '../store/answer';
-import { resetPage } from '../store/page';
-import { AxiosError } from 'axios';
+import { useAppSelector } from '../hooks/useRedux';
 import Spinner from '../components/common/Spinner';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
 import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
-
+import useCleanup from '../hooks/useCleanup';
+import useCommon from '../hooks/useCommon';
 function CleanupPage() {
-  const dispatch = useAppDispatch();
   const currPage = useAppSelector((state) => state.page.currPage);
-  const {
-    isLoading,
-    error,
-    data: cleanupRequestForm,
-  } = useQuery<RequestForm, AxiosError>({
-    queryKey: ['cleanupRequestForm'],
-    queryFn: () => getCleanupQuestionList(),
-    retry: 3,
-    refetchOnWindowFocus: false,
-  });
 
-  const question = cleanupRequestForm?.items[currPage];
-  const questionLength = cleanupRequestForm?.items.length ?? 0;
+  const { isLoading, error, cleanupRequestForm } = useCleanup();
 
-  const isSuccess = currPage === questionLength;
-
-  useEffect(() => {
-    dispatch(saveFormId(cleanupRequestForm?.formId));
-    return () => {
-      dispatch(resetAnswer());
-      dispatch(resetPage());
-    };
-  }, [cleanupRequestForm, dispatch]);
+  const { question, questionLength, isSuccess } = useCommon(
+    currPage,
+    cleanupRequestForm
+  );
 
   if (isLoading) return <Spinner />;
 

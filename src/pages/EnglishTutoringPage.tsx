@@ -1,42 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import { RequestForm } from '../model/question';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { resetAnswer, saveFormId } from '../store/answer';
-import { resetPage } from '../store/page';
-import { AxiosError } from 'axios';
-import { getEnglishTutoringQuestionList } from '../api/english';
 import Spinner from '../components/common/Spinner';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
 import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
+import useEnglishTutoring from '../hooks/useEnglishTutoring';
+import { useAppSelector } from '../hooks/useRedux';
+import useCommon from '../hooks/useCommon';
 
 function EnglishTutoring() {
-  const dispatch = useAppDispatch();
   const currPage = useAppSelector((state) => state.page.currPage);
-  const {
-    isLoading,
-    error,
-    data: englishTutoringRequestForm,
-  } = useQuery<RequestForm, AxiosError>({
-    queryKey: ['englishTutoringRequestForm'],
-    queryFn: () => getEnglishTutoringQuestionList(),
-    retry: 3,
-    refetchOnWindowFocus: false,
-  });
 
-  const question = englishTutoringRequestForm?.items[currPage];
-  const questionLength = englishTutoringRequestForm?.items.length ?? 0;
+  const { isLoading, error, englishTutoringRequestForm } = useEnglishTutoring();
 
-  const isSuccess = currPage === questionLength;
-
-  useEffect(() => {
-    dispatch(saveFormId(englishTutoringRequestForm?.formId));
-    return () => {
-      dispatch(resetAnswer());
-      dispatch(resetPage());
-    };
-  }, [englishTutoringRequestForm, dispatch]);
+  const { question, questionLength, isSuccess } = useCommon(
+    currPage,
+    englishTutoringRequestForm
+  );
 
   if (isLoading) return <Spinner />;
 
