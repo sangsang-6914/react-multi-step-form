@@ -1,13 +1,15 @@
 import { ChangeEvent, useState } from 'react';
 
 type Props = {
+  type: 'checkbox' | 'radio';
   text: string;
   id: number;
   checked: boolean;
-  onChecked: (e: ChangeEvent<HTMLInputElement>, text: string) => void;
+  itemId: number;
+  onClicked: (e: ChangeEvent<HTMLInputElement>, text: string) => void;
 };
 
-function Checkbox({ text, id, checked, onChecked }: Props) {
+function Input({ type, text, id, checked, itemId, onClicked }: Props) {
   const [hover, setHover] = useState(false);
 
   return (
@@ -19,10 +21,11 @@ function Checkbox({ text, id, checked, onChecked }: Props) {
       className={`flex items-center gap-3 border border-gray-200 p-4 rounded-lg`}
     >
       <input
-        type="checkbox"
+        type={type}
         value={text}
-        id={`checkbox_${id}`}
-        onChange={(e) => onChecked(e, text)}
+        id={`${type}_${id}`}
+        name={itemId + ''}
+        onChange={(e) => onClicked(e, text)}
         checked={checked}
         className="w-5 h-5 accent-brand"
       />
@@ -30,7 +33,7 @@ function Checkbox({ text, id, checked, onChecked }: Props) {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         className="w-full hover:cursor-pointer text-base font-medium"
-        htmlFor={`checkbox_${id}`}
+        htmlFor={`${type}_${id}`}
       >
         {text}
       </label>
@@ -38,4 +41,4 @@ function Checkbox({ text, id, checked, onChecked }: Props) {
   );
 }
 
-export default Checkbox;
+export default Input;

@@ -25,7 +25,7 @@ function useQuestion(itemId: number, formType: string) {
     );
   };
 
-  const handleSelected = (text: string) => {
+  const handleSelected = (e: ChangeEvent<HTMLInputElement>, text: string) => {
     if (selected === text) return;
     setSelected(text);
 

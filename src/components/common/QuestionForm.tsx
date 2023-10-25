@@ -1,9 +1,8 @@
 import { Question } from '../../model/question';
 import Button from '../ui/Button';
 import { useAppSelector } from '../../hooks/useRedux';
-import Checkbox from '../ui/Checkbox';
-import Radio from '../ui/Radio';
 import useQuestion from '../../hooks/useQuestion';
+import Input from '../ui/Input';
 
 type Props = {
   questionInfo: Question;
@@ -33,11 +32,13 @@ function QuestionForm({
           <>
             {options.map(({ text, id }) => (
               <li key={id}>
-                <Checkbox
+                <Input
+                  type="checkbox"
                   text={text}
                   id={id}
+                  itemId={itemId}
                   checked={checkedList.includes(text)}
-                  onChecked={handleChecked}
+                  onClicked={handleChecked}
                 />
               </li>
             ))}
@@ -46,12 +47,13 @@ function QuestionForm({
           <>
             {options.map(({ text, id }) => (
               <li key={id}>
-                <Radio
+                <Input
+                  type="radio"
                   text={text}
                   id={id}
                   itemId={itemId}
                   checked={selected === text}
-                  onSelected={handleSelected}
+                  onClicked={handleSelected}
                 />
               </li>
             ))}
