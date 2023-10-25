@@ -9,6 +9,15 @@ module.exports = {
         brand_lighter_2: '#eafaf9',
         light_gray: '#f2f2f2',
       },
+      animation: {
+        'spin-infinite': 'spin 0.7s linear infinite',
+      },
+      keyframes: {
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
     },
   },
   plugins: [],
