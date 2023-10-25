@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Spinner() {
   return (
     <div className="fixed top-0 w-full h-full flex flex-col gap-5 items-center justify-center">
