@@ -1,20 +1,8 @@
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { resetAnswer } from '../../store/answer';
-import { resetPage } from '../../store/page';
+import useSubmit from '../../hooks/useSubmit';
 import Button from '../ui/Button';
 
 function SubmitComplete() {
-  const dispatch = useAppDispatch();
-  const submitData = JSON.stringify(
-    useAppSelector((state) => state.answer),
-    null,
-    2
-  );
-
-  const handleClick = () => {
-    dispatch(resetAnswer());
-    dispatch(resetPage());
-  };
+  const { submitData, handleClick } = useSubmit();
 
   return (
     <div className="flex flex-col gap-7">

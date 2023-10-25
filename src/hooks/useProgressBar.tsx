@@ -5,8 +5,10 @@ function getProgressBarGage(questionLength: number, completedPage: number) {
   return (completedPage / questionLength) * 100;
 }
 
-function useProgressBar(questionLength: number) {
+function useProgressBar() {
+  const questionLength = useAppSelector((state) => state.page.questionLength);
   const completedPage = useAppSelector((state) => state.page.completedPage);
+
   const progressBarGage = getProgressBarGage(questionLength, completedPage);
 
   return { progressBarGage };

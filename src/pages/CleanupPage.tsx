@@ -1,4 +1,3 @@
-import { useAppSelector } from '../hooks/useRedux';
 import Spinner from '../components/ui/Spinner';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
@@ -7,10 +6,8 @@ import useCommon from '../hooks/useCommon';
 import useFetch from '../hooks/useFetch';
 
 function CleanupPage() {
-  const currPage = useAppSelector((state) => state.page.currPage);
   const { isLoading, error, data: cleanupRequestForm } = useFetch('cleanup');
-
-  const { question, isSuccess } = useCommon(currPage, cleanupRequestForm);
+  const { question, isSuccess } = useCommon(cleanupRequestForm);
 
   if (isLoading) return <Spinner />;
 

@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { RequestForm } from '../model/question';
-import { useAppDispatch } from './useRedux';
+import { useAppDispatch, useAppSelector } from './useRedux';
 import { resetAnswer, saveFormId } from '../store/answer';
 import { resetPage, saveLength } from '../store/page';
 
-function useCommon(currPage: number, requestForm?: RequestForm) {
+function useCommon(requestForm?: RequestForm) {
+  const currPage = useAppSelector((state) => state.page.currPage);
   const dispatch = useAppDispatch();
+
   const question = requestForm?.items[currPage];
   const questionLength = requestForm?.items.length ?? 0;
 

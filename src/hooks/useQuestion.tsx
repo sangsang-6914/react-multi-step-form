@@ -5,6 +5,8 @@ import { nextPage, prevPage } from '../store/page';
 
 function useQuestion(itemId: number, formType: string) {
   const answerList = useAppSelector((state) => state.answer.items);
+  const currPage = useAppSelector((state) => state.page.currPage);
+  const questionLength = useAppSelector((state) => state.page.questionLength);
 
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [selected, setSelected] = useState<string>('');
@@ -115,6 +117,8 @@ function useQuestion(itemId: number, formType: string) {
   return {
     checkedList,
     selected,
+    currPage,
+    questionLength,
     handleChecked,
     handleSelected,
     handlePrevBtnClick,

@@ -1,9 +1,7 @@
 import useProgressBar from '../../hooks/useProgressBar';
-import { useAppSelector } from '../../hooks/useRedux';
 
 function ProgressBar() {
-  const questionLength = useAppSelector((state) => state.page.questionLength);
-  const { progressBarGage } = useProgressBar(questionLength);
+  const { progressBarGage } = useProgressBar();
 
   return (
     <div className="w-full h-2 bg-gray-200 rounded-xl">

@@ -2,22 +2,17 @@ import Spinner from '../components/ui/Spinner';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
 import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
-import { useAppSelector } from '../hooks/useRedux';
 import useCommon from '../hooks/useCommon';
 import useFetch from '../hooks/useFetch';
 
 function EnglishTutoring() {
-  const currPage = useAppSelector((state) => state.page.currPage);
   const {
     isLoading,
     error,
     data: englishTutoringRequestForm,
   } = useFetch('englishTutoring');
 
-  const { question, isSuccess } = useCommon(
-    currPage,
-    englishTutoringRequestForm
-  );
+  const { question, isSuccess } = useCommon(englishTutoringRequestForm);
 
   if (isLoading) return <Spinner />;
 

@@ -1,6 +1,5 @@
 import { Question } from '../../model/question';
 import Button from '../ui/Button';
-import { useAppSelector } from '../../hooks/useRedux';
 import useQuestion from '../../hooks/useQuestion';
 import Input from '../ui/Input';
 
@@ -11,10 +10,9 @@ type Props = {
 function QuestionForm({
   questionInfo: { title, options, formType, itemId },
 }: Props) {
-  const currPage = useAppSelector((state) => state.page.currPage);
-  const questionLength = useAppSelector((state) => state.page.questionLength);
-
   const {
+    currPage,
+    questionLength,
     checkedList,
     selected,
     handleChecked,
