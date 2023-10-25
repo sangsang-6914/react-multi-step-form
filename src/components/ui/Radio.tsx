@@ -5,7 +5,7 @@ type Props = {
   id: number;
   itemId: number;
   checked: boolean;
-  onSelected: (e: ChangeEvent<HTMLInputElement>, text: string) => void;
+  onSelected: (text: string) => void;
 };
 
 function Radio({ text, id, itemId, checked, onSelected }: Props) {
@@ -26,7 +26,7 @@ function Radio({ text, id, itemId, checked, onSelected }: Props) {
         value={text}
         id={`radio_${id}`}
         name={itemId + ''}
-        onChange={(e) => onSelected(e, text)}
+        onChange={() => onSelected(text)}
         checked={checked}
         className="w-5 h-5 accent-brand"
       />

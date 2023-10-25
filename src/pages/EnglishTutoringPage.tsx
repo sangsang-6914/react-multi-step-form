@@ -1,17 +1,20 @@
-import Spinner from '../components/common/Spinner';
+import Spinner from '../components/ui/Spinner';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
 import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
-import useEnglishTutoring from '../hooks/useEnglishTutoring';
 import { useAppSelector } from '../hooks/useRedux';
 import useCommon from '../hooks/useCommon';
+import useFetch from '../hooks/useFetch';
 
 function EnglishTutoring() {
   const currPage = useAppSelector((state) => state.page.currPage);
+  const {
+    isLoading,
+    error,
+    data: englishTutoringRequestForm,
+  } = useFetch('englishTutoring');
 
-  const { isLoading, error, englishTutoringRequestForm } = useEnglishTutoring();
-
-  const { question, questionLength, isSuccess } = useCommon(
+  const { question, isSuccess } = useCommon(
     currPage,
     englishTutoringRequestForm
   );
@@ -22,13 +25,9 @@ function EnglishTutoring() {
 
   return (
     <div className="flex flex-col h-[94vh] max-h-screen">
-      <ProgressBarWrapper title="영어 과외" questionLength={questionLength} />
+      <ProgressBarWrapper title="영어 과외" />
       <section className="bg-light_gray w-full h-full">
-        <QuestionFormWrapper
-          isSuccess={isSuccess}
-          question={question}
-          questionLength={questionLength}
-        />
+        <QuestionFormWrapper isSuccess={isSuccess} question={question} />
       </section>
     </div>
   );

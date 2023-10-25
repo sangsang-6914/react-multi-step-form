@@ -1,127 +1,29 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Question } from '../../model/question';
 import Button from '../ui/Button';
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { formatAnswer, saveAnswer } from '../../store/answer';
-import { nextPage, prevPage } from '../../store/page';
+import { useAppSelector } from '../../hooks/useRedux';
 import Checkbox from '../ui/Checkbox';
 import Radio from '../ui/Radio';
+import useQuestion from '../../hooks/useQuestion';
 
 type Props = {
   questionInfo: Question;
-  questionLength: number;
 };
 
 function QuestionForm({
   questionInfo: { title, options, formType, itemId },
-  questionLength,
 }: Props) {
-  const answerList = useAppSelector((state) => state.answer.items);
   const currPage = useAppSelector((state) => state.page.currPage);
+  const questionLength = useAppSelector((state) => state.page.questionLength);
 
-  const dispatch = useAppDispatch();
-
-  const [checkedList, setCheckedList] = useState<string[]>([]);
-
-  const [selected, setSelected] = useState<string>('');
-
-  const handleChecked = (e: ChangeEvent<HTMLInputElement>, text: string) => {
-    const isChecked = e.target.checked;
-    let updatedCheckedList;
-    if (isChecked) {
-      updatedCheckedList = [...checkedList, text];
-      setCheckedList(updatedCheckedList);
-    } else {
-      updatedCheckedList = checkedList.filter((item) => item !== text);
-      setCheckedList(updatedCheckedList);
-    }
-
-    dispatch(
-      saveAnswer({
-        id: itemId,
-        answer: updatedCheckedList,
-      })
-    );
-  };
-
-  const handleSelected = (e: ChangeEvent<HTMLInputElement>, text: string) => {
-    if (selected === text) return;
-    setSelected(text);
-
-    dispatch(
-      saveAnswer({
-        id: itemId,
-        answer: text,
-      })
-    );
-  };
-
-  const handlePrevBtnClick = (e: FormEvent) => {
-    e.preventDefault();
-    dispatch(prevPage());
-    resetData();
-  };
-
-  const handleNextBtnClick = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!checkedList.length && selected === '') {
-      window.alert('값을 입력해 주세요!');
-      return;
-    }
-
-    dispatch(nextPage());
-    resetData();
-  };
-
-  const handleSubmitBtnClick = (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!checkedList.length && selected === '') {
-      window.alert('값을 입력해 주세요!');
-      return;
-    }
-
-    // 제출 완료 페이지의 answer 데이터의 문자열 표현을 위함
-    dispatch(formatAnswer());
-    dispatch(nextPage());
-    resetData();
-  };
-
-  const resetData = () => {
-    setCheckedList([]);
-    setSelected('');
-  };
-
-  useEffect(() => {
-    const initCheckedList = () => {
-      if (answerList.length) {
-        if (answerList.find((answer) => answer.id === itemId)) {
-          const index = answerList.findIndex((answer) => answer.id === itemId);
-          const data = answerList[index].answer as string[];
-          return data;
-        } else {
-          return [];
-        }
-      }
-      return [];
-    };
-    const initSelected = () => {
-      if (answerList.length) {
-        if (answerList.find((answer) => answer.id === itemId)) {
-          const index = answerList.findIndex((answer) => answer.id === itemId);
-          const data = answerList[index].answer as string;
-          return data;
-        } else {
-          return '';
-        }
-      }
-      return '';
-    };
-    formType === 'checkbox'
-      ? setCheckedList(initCheckedList)
-      : setSelected(initSelected);
-  }, [answerList, itemId, formType]);
+  const {
+    checkedList,
+    selected,
+    handleChecked,
+    handleSelected,
+    handlePrevBtnClick,
+    handleNextBtnClick,
+    handleSubmitBtnClick,
+  } = useQuestion(itemId, formType);
 
   return (
     <form className="flex flex-col gap-5 h-full justify-around">
