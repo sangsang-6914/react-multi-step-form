@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './useRedux';
 import { formatAnswer, saveAnswer } from '../store/answer';
 import { nextPage, prevPage } from '../store/page';
@@ -39,35 +39,30 @@ function useQuestion(itemId: number, formType: string) {
     );
   };
 
-  const handlePrevBtnClick = (e: FormEvent) => {
-    e.preventDefault();
+  const handlePrevBtnClick = () => {
     dispatch(prevPage());
     resetData();
   };
 
-  const handleNextBtnClick = (e: FormEvent) => {
-    e.preventDefault();
-    handleBefore();
+  const handleNextBtnClick = () => {
+    if (!checkedList.length && selected === '') {
+      window.alert('값을 입력해 주세요!');
+      return false;
+    }
 
     dispatch(nextPage());
     resetData();
   };
 
-  const handleSubmitBtnClick = (e: FormEvent) => {
-    e.preventDefault();
-    handleBefore();
-
-    // 제출 완료 페이지의 answer 데이터의 문자열 표현을 위함
-    dispatch(formatAnswer());
-    dispatch(nextPage());
-    resetData();
-  };
-
-  const handleBefore = () => {
+  const handleSubmitBtnClick = () => {
     if (!checkedList.length && selected === '') {
       window.alert('값을 입력해 주세요!');
       return;
     }
+    // 제출 완료 페이지의 answer 데이터의 문자열 표현을 위함
+    dispatch(formatAnswer());
+    dispatch(nextPage());
+    resetData();
   };
 
   const resetData = () => {

@@ -3,15 +3,17 @@ import React, { FormEvent } from 'react';
 type Props = {
   text: string;
   color: string;
+  type?: 'button' | 'submit' | 'reset';
   onClick?: (e: FormEvent) => void;
 };
 
-function Button({ text, color, onClick }: Props) {
+function Button({ text, type = 'button', color, onClick }: Props) {
   return (
     <button
       className={`${setColor(
         color
       )} py-2 px-6 text-white font-semibold rounded-md hover:brightness-90`}
+      type={type}
       onClick={onClick}
     >
       {text}
