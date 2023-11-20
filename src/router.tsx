@@ -2,8 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import ErrorPage from './pages/ErrorPage';
 import HomePage from './pages/HomePage';
-import EnglishTutoringPage from './pages/EnglishTutoringPage';
-import CleanupPage from './pages/CleanupPage';
+import RequestFormPage from './pages/RequestFormPage';
 
 export const router = createBrowserRouter([
   {
@@ -14,11 +13,11 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: '/english-tutoring',
-        element: <EnglishTutoringPage />,
+        element: <RequestFormPage />,
       },
       {
         path: '/cleanup',
-        element: <CleanupPage />,
+        element: <RequestFormPage />,
       },
     ],
   },
