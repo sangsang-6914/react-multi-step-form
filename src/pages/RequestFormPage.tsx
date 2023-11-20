@@ -1,18 +1,18 @@
-import Spinner from '../components/ui/Spinner';
+import { useLocation } from 'react-router-dom';
 import Error from '../components/common/Error';
 import ProgressBarWrapper from '../components/common/ProgressBarWrapper';
 import QuestionFormWrapper from '../components/common/QuestionFormWrapper';
+import Spinner from '../components/ui/Spinner';
 import useCommon from '../hooks/useCommon';
 import useFetch from '../hooks/useFetch';
 
-function EnglishTutoring() {
+function RequestFormPage() {
   const {
-    isLoading,
-    error,
-    data: englishTutoringRequestForm,
-  } = useFetch('englishTutoring');
-
-  const { question, isSuccess } = useCommon(englishTutoringRequestForm);
+    pathname,
+    state: { title },
+  } = useLocation();
+  const { isLoading, error, data: requestForm } = useFetch(pathname);
+  const { question, isSuccess } = useCommon(requestForm);
 
   if (isLoading) return <Spinner />;
 
@@ -20,7 +20,7 @@ function EnglishTutoring() {
 
   return (
     <div className="flex flex-col h-[94vh] max-h-screen">
-      <ProgressBarWrapper title="영어 과외" />
+      <ProgressBarWrapper title={title} />
       <section className="bg-light_gray w-full h-full">
         <QuestionFormWrapper isSuccess={isSuccess} question={question} />
       </section>
@@ -28,4 +28,4 @@ function EnglishTutoring() {
   );
 }
 
-export default EnglishTutoring;
+export default RequestFormPage;
