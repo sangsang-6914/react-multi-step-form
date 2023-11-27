@@ -1,4 +1,4 @@
-# Soomgo Serviec Request Frontend
+# Multi Step Form Frontend
 
 ### Project Start
 
@@ -25,4 +25,4 @@
 
 ### Deploy 주소
 
-https://soomgo-frontend.vercel.app/
+https://react-multi-step-form-fawn.vercel.app/
